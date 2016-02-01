@@ -68,6 +68,11 @@ namespace QuickTimer
             TickEvent?.Invoke(this, e);
         }
 
+        public void OnReset(EventArgs e)
+        {
+            ResetEvent?.Invoke(this, e);
+        }
+
         public void OnQuit(EventArgs e)
         {
             //Only gets invoked if the event isn't null;
