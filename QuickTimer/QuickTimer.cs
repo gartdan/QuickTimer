@@ -79,10 +79,16 @@ namespace QuickTimer
             QuitEvent?.Invoke(this, e);
         }
 
+        private void Log(string message)
+        {
+            Console.WriteLine(message);
+        }
 
 
+        //5: Nameof Operator. Rename feactoring, the string changes too.
         public void Start()
         {
+            Log($"--- Entering the {nameof(Start)} method.---");
             OnStart(EventArgs.Empty);
             ThreadPool.QueueUserWorkItem(ReadInput);
             _sw.Start();
@@ -93,6 +99,7 @@ namespace QuickTimer
                 Thread.Sleep(100);
                 _ev.WaitOne();
             };
+            Log($"--- Exiting the {nameof(Start)} method.---");
         }
 
         void ReadInput(Object stateInfo)
