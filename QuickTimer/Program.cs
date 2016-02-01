@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+//:1 -- using Static classes
 using static System.Console;
 
 namespace QuickTimer
@@ -22,7 +23,7 @@ namespace QuickTimer
             //Console.WriteLine("Welcome to {0}. {3}Instructions: {3}Press any key to begin or pause. {3}Press '{1}' to reset. {3}Press '{2}' to quit.",
             //    AppName, ResetChar, QuitChar, NewLine);
 
-            //1: Example of new string interpolation
+            //2: Example of new string interpolation. Insert the values where they're suppsoed to go in the string literal
             Console.WriteLine($"Welcome to {AppName}. {NewLine}Instructions: {NewLine}Press any key to begin or pause. {NewLine}Press '{ResetChar}' to reset. {NewLine}Press '{QuitChar} to quit.");
             Console.ReadKey();
             Console.Clear();
