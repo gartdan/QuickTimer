@@ -81,7 +81,7 @@ namespace QuickTimer
 
         private void Log(string message)
         {
-            Console.WriteLine(message);
+            Debug.WriteLine(message);
         }
 
 
