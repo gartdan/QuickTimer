@@ -7,69 +7,26 @@ namespace QuickTimer
 {
     class Program
     {
-        static bool Paused = false;
-        static bool Quit = false;
-        static ManualResetEvent _ev = new ManualResetEvent(true);
-        static Stopwatch _sw = new Stopwatch();
+        static readonly string AppName = "QuickTimer 1.0";
+        static readonly char ResetChar = 'r';
+        static readonly char QuitChar = 'q';
+        static readonly string NewLine = Environment.NewLine;
+
+
         static void Main(string[] args)
         {
-            ThreadPool.QueueUserWorkItem(ReadInput);
-            _sw.Start();
-            while(true) {
-                if (Quit) break;
-                Write($"\r{_sw.ElapsedMilliseconds.ToSeconds()}");
-                Thread.Sleep(100);
-                _ev.WaitOne();
-            };
-            
-        }
+            var timer = new QuickTimer();
+            timer.QuitEvent +=  (o, e) => Console.Clear();
+            timer.ResetEvent += (o, e) => Console.Clear();
+            timer.TickEvent += (o, e) => Console.Write($"\r{timer.ElapsedMilliseconds.ToSeconds()}");
+            //Console.WriteLine("Welcome to {0}. {3}Instructions: {3}Press any key to begin or pause. {3}Press '{1}' to reset. {3}Press '{2}' to quit.",
+            //    AppName, ResetChar, QuitChar, NewLine);
 
-        static void ReadInput(Object stateInfo)
-        {
-            while (true)
-            {
-                var input = Console.ReadKey();
-                switch(input.KeyChar)
-                {
-                    case 'q':
-                        QuitTimer();
-                        break;
-                    case 'r':
-                        ResetTimer();
-                        TogglePause();
-                        break;
-                    default:
-                        TogglePause();
-                        break;
-                }
-            }
-        }
-
-        private static void TogglePause()
-        {
-            if (!Paused)
-            {
-                _ev.Reset();
-                _sw.Stop();
-            }
-            else {
-                _ev.Set();
-                _sw.Start();
-            }
-            Paused = !Paused;
-        }
-
-        private static void ResetTimer()
-        {
-            _sw.Reset();
+            //1: Example of new string interpolation
+            Console.WriteLine($"Welcome to {AppName}. {NewLine}Instructions: {NewLine}Press any key to begin or pause. {NewLine}Press '{ResetChar}' to reset. {NewLine}Press '{QuitChar} to quit.");
+            Console.ReadKey();
             Console.Clear();
-        }
-
-        private static void QuitTimer()
-        {
-            Quit = true;
-            _ev.Set();
-            Console.Clear();
+            timer.Start();
         }
     }
 }
