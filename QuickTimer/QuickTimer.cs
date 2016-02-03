@@ -34,7 +34,7 @@ namespace QuickTimer
 
         //3. Null Conditional Operator
         //If the left hand side is null, the whole thing is null. Only if the left hand side is not null do we do the other side of the operation.
-        //The Elvis Operator .?
+        //The Elvis Operator ?.
         // Great for triggering events
         public long? ElapsedMilliseconds2
         {
@@ -47,7 +47,12 @@ namespace QuickTimer
 
 
         //4 -- Single statement Expression Bodied properties (also for methods)
-        public long ElapsedSeconds => _sw.ElapsedMilliseconds / 1000L;
+        public long ElapsedSeconds
+        {
+            get { return _sw.ElapsedMilliseconds / 1000L; }
+        }
+       
+        //public long ElapsedSeconds => _sw.ElapsedMilliseconds / 1000L;
 
         public long ElapsedMinutes => ElapsedSeconds / 60L;
 
@@ -55,7 +60,12 @@ namespace QuickTimer
         //no need to copy the delegate to a local variable and check for null before triggering
         public virtual void OnStart(EventArgs e)
         {
-            StartEvent?.Invoke(this, e);
+            var handler = StartEvent;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+            //StartEvent?.Invoke(this, e);
         }
 
         public void OnPause(EventArgs e)
@@ -85,10 +95,12 @@ namespace QuickTimer
         }
 
 
-        //5: Nameof Operator. Rename feactoring, the string changes too.
+        
         public void Start()
         {
-            Log($"--- Entering the {nameof(Start)} method.---");
+            //5: Nameof Operator. Rename feactoring, the string changes too.
+            Log($"--- Entering the Start method.---");
+            //Log($"--- Entering the {nameof(Start)} method.---");
             OnStart(EventArgs.Empty);
             ThreadPool.QueueUserWorkItem(ReadInput);
             _sw.Start();
